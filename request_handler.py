@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from entries import get_all_entries, get_entry_by_id
+from entries import get_all_entries, get_entry_by_id, delete_entry
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -103,6 +103,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Parse the URL
         (resource, id) = self.parse_url(self.path)
+
+        if resource == 'entries':
+            delete_entry(id)
 
         # Encode the new item and send in response 
         self.wfile.write("".encode())
