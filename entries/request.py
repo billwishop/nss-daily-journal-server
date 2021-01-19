@@ -34,3 +34,31 @@ def get_all_entries():
             entries.append(entry.__dict__)
 
     return json.dumps(entries)
+
+def get_entry_by_id(id):
+
+    with sqlite3.connect("./dailyjournal.db") as conn:
+
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # SQL query
+        db_cursor.execute("""
+        SELECT
+            e.id,
+            e.date,
+            e.subject,
+            e.entry,
+            e.mood_id
+        FROM entry e
+        WHERE e.id = ?
+        """, ( id, ))
+
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        # Create an entry instance from the current row
+        entry = Entry(data['id'], data['date'], data['subject'],
+                            data['entry'], data['mood_id'])
+
+        return json.dumps(entry.__dict__)
