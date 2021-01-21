@@ -1,6 +1,7 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from entries import get_all_entries, get_entry_by_id, delete_entry
+from entries import get_all_entries, get_entry_by_id, delete_entry, search_entry
+from moods import get_all_moods
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -69,6 +70,14 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_entry_by_id(id)}"
                 else:
                     response = f"{get_all_entries()}"
+            elif resource == "moods":
+                response = f"{get_all_moods()}"
+
+        elif len(parsed) == 3:
+            ( resource, key, value ) = parsed
+
+            if resource == "entries" and key == "q":
+                response = search_entry(value)
 
         self.wfile.write(response.encode())
 
