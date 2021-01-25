@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Entry
+from models import Entry, Mood
 
 def get_all_entries():
     # Open a connection to the database
@@ -16,8 +16,11 @@ def get_all_entries():
             e.date,
             e.subject,
             e.entry,
-            e.mood_id
+            e.mood_id,
+            m.mood mood_name
         FROM entry e
+        JOIN mood m
+            ON m.id = e.mood_id
         """)
 
         # Initialize empty list to hold entry representations
@@ -30,6 +33,12 @@ def get_all_entries():
         for row in dataset:
             entry = Entry(row['id'], row['date'], row['subject'],
                             row['entry'], row['mood_id'])
+
+            # Create a mood instance from the current row
+            mood = Mood(row['id'], row['mood_name'])
+
+            # add the dictionary representation of the mood to the entry
+            entry.mood = mood.__dict__
             
             entries.append(entry.__dict__)
 
@@ -84,8 +93,11 @@ def search_entry(searchTerm):
             e.date,
             e.subject,
             e.entry,
-            e.mood_id
+            e.mood_id,
+            m.mood mood_name
         FROM entry e
+        JOIN mood m
+            ON m.id = e.mood_id
         WHERE e.entry LIKE ?
         """, ("%"+ searchTerm + "%", ))
 
@@ -96,6 +108,13 @@ def search_entry(searchTerm):
         for row in dataset:
             entry = Entry(row['id'], row['date'], row['subject'],
                             row['entry'], row['mood_id'])
+
+            # Create a mood instance from the current row
+            mood = Mood(row['id'], row['mood_name'])
+
+            # add the dictionary representation of the mood to the entry
+            entry.mood = mood.__dict__
+
             entries.append(entry.__dict__)
     
     return json.dumps(entries)
