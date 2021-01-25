@@ -21,5 +21,8 @@ INSERT INTO `Entry` VALUES (null, '1/1/21', 'Python', 'New year, new language', 
 INSERT INTO `Entry` VALUES (null, '1/2/21', 'SQL', 'New year, new language', '2');
 INSERT INTO `Entry` VALUES (null, '1/3/21', 'Python', 'New year, new language', '3');
 INSERT INTO `Entry` VALUES (null, '1/4/21', 'SQL', 'New year, new language', '4');
+INSERT INTO `Entry` VALUES (null, '1/5/21', 'YES', 'YES', '4');
+INSERT INTO `Entry` VALUES (null, '1/6/21', 'NO', 'NO', '2');
+
 
 
